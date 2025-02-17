@@ -1,0 +1,12 @@
+{
+  "projectConfig": {
+    "projectSettings": {
+      "authSettings": {
+        "authUrl": "https://eu1.identity.cicd.development.abovecloud.io/connect/authorize",
+        "clientId": "AC-Frontend",
+        "responseType": "token",
+        "scope": "API"
+      }
+    }
+  }
+}

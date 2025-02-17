@@ -1,0 +1,35 @@
+/* app.css */
+.app-container {
+  margin-right: 300px; /* Espaço reservado para o GlobalStoreViewer */
+  padding-top: 50px; /* Espaço para o AppBar */
+}
+
+.dashboard-main {
+  padding: 20px;
+  margin-top: 70px; /* Espaço para o AppBar (Toolbar + Tabs) */
+}
+
+.empty-dashboard {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Estilos para o TopMenu */
+.top-menu {
+  /* Usando a variant dense, a altura padrão é menor */
+  min-height: 40px;
+}
+
+.top-menu .MuiToolbar-root {
+  padding: 0 10px;
+}
+
+.top-menu-title {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.top-tabs {
+  min-height: 40px;
+  height: 40px;
+}
