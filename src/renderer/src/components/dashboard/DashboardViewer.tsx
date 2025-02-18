@@ -1,52 +1,56 @@
 // src/renderer/src/components/DashboardViewer.tsx
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Typography, Button, TextField } from '@mui/material'
 import ContainerViewer from '../container/ContainerViewer'
 import DashboardNew from './DashboardNew'
-import { DashboardInstanceManager } from './DashboardInstanceManager'
-import { useDashboardInstance } from './useDashboardInstance'
-import { ContainerData } from '../globalStore/GlobalStoreProvider'
+import { DashboardData } from '../globalStore'
+import { useGlobalStore } from '../globalStore'
 
 interface DashboardViewerProps extends React.PropsWithChildren {
-  manager: DashboardInstanceManager | null
+  dashboard: DashboardData | null
+  onAddDashboard: () => void
 }
 
-const DashboardViewer: React.FC<DashboardViewerProps> = ({ manager, children }) => {
-  // Se não houver uma instância de dashboard, renderiza o DashboardNew
-  if (!manager) {
-    return <DashboardNew />
-  }
-
-  // Obtém o dashboard atualizado via hook
-  const dashboard = useDashboardInstance(manager)
-
-  // Estado local para o título (para edição)
-  const [title, setTitle] = useState(dashboard.dashboardSettings.title)
+const DashboardViewer: React.FC<DashboardViewerProps> = ({
+  dashboard,
+  onAddDashboard,
+  children
+}) => {
+  const { dispatch } = useGlobalStore()
+  const [title, setTitle] = useState(dashboard?.dashboardSettings.title || '')
 
   useEffect(() => {
-    setTitle(dashboard.dashboardSettings.title)
-  }, [dashboard.dashboardSettings.title])
+    setTitle(dashboard?.dashboardSettings.title || '')
+  }, [dashboard?.dashboardSettings.title])
 
   const handleTitleBlur = (): void => {
-    if (title !== dashboard.dashboardSettings.title) {
-      manager.updateTitle(title)
+    if (dashboard && title !== dashboard.dashboardSettings.title) {
+      dispatch({
+        type: 'UPDATE_DASHBOARD_TITLE',
+        payload: { dashboardId: dashboard.dashboardSettings.id, title }
+      })
     }
   }
 
-  // A ação de adicionar container é delegada ao manager do dashboard
   const handleAddContainer = (): void => {
-    const newContainer: ContainerData = {
-      containerSettings: {
-        id: `container-${Date.now()}`,
-        title: 'New Container',
-        apiDefinition: {
-          baseUrl: '',
-          authRequired: true
-        }
-      },
-      components: []
+    if (dashboard) {
+      const newContainer = {
+        containerSettings: {
+          id: `container-${Date.now()}`,
+          title: 'New Container',
+          apiDefinition: {}
+        },
+        components: []
+      }
+      dispatch({
+        type: 'ADD_CONTAINER',
+        payload: { dashboardId: dashboard.dashboardSettings.id, container: newContainer }
+      })
     }
-    manager.addContainer(newContainer)
+  }
+
+  if (!dashboard) {
+    return <DashboardNew onAddDashboard={onAddDashboard} />
   }
 
   return (

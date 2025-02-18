@@ -6,12 +6,31 @@ import icon from '../../resources/icon.png?asset'
 
 let mainWindow: BrowserWindow | null = null
 
+async function setupStoreHandlers(): Promise<void> {
+  // Usa dynamic import para carregar electron-store (ESM)
+  const { default: Store } = await import('electron-store')
+  const store = new Store()
+  console.log('GlobalStore file path:', store.path)
+
+  ipcMain.handle('load-global-store', async () => {
+    return store.get('globalStore')
+  })
+
+  ipcMain.on('save-global-store', (event, state) => {
+    store.set('globalStore', state)
+  })
+}
+
+setupStoreHandlers().catch((err) => {
+  console.error('Erro ao configurar electron-store:', err)
+})
+
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
-    show: false,
+    show: true,
     autoHideMenuBar: false,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

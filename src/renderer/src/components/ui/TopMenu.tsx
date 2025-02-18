@@ -1,56 +1,54 @@
 // src/renderer/src/components/TopMenu.tsx
 import React from 'react'
-import { AppBar, Toolbar, IconButton, Tabs, Tab, Menu, MenuItem, Button } from '@mui/material'
+import { AppBar, Toolbar, Tabs, Tab, IconButton, Button, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import AddIcon from '@mui/icons-material/Add'
-import { useDashboardManager } from './dashboard/useDashboardManager'
+import { useGlobalStore } from '../globalStore'
 
 interface TopMenuProps {
-  onSelectDashboard: (dashboardId: string) => void
   selectedDashboardId: string
+  onSelectDashboard: (dashboardId: string) => void
+  onAddDashboard: () => void
+  onOpenAuth: () => void
 }
 
-const TopMenu: React.FC<TopMenuProps> = ({ onSelectDashboard, selectedDashboardId }) => {
+const TopMenu: React.FC<TopMenuProps> = ({
+  selectedDashboardId,
+  onSelectDashboard,
+  onAddDashboard,
+  onOpenAuth
+}) => {
+  const { state } = useGlobalStore()
+  const dashboards = state.dashboards
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  // Obtém a lista de dashboards do DashboardManager.
-  const dashboards = useDashboardManager()
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>): void => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleMenuClose = (): void => {
-    setAnchorEl(null)
-  }
-
-  const handleDashboardChange = (event: React.SyntheticEvent, newValue: string): void => {
+  const handleMenuOpen = (e: React.MouseEvent<HTMLElement>): void => setAnchorEl(e.currentTarget)
+  const handleMenuClose = (): void => setAnchorEl(null)
+  const handleDashboardChange = (_: React.SyntheticEvent, newValue: string): void =>
     onSelectDashboard(newValue)
-  }
 
-  // A função para adicionar um dashboard deve ser chamada a partir de um botão.
-  const handleAddDashboard = (): void => {
-    // Importamos a instância única diretamente
-    import('./dashboard/DashboardManager').then(({ default: DashboardManager }) => {
-      const newDash = DashboardManager.newDashboard()
-      onSelectDashboard(newDash.dashboardSettings.id)
-    })
-  }
-
+  // Se houver dashboards, currentValue é o id selecionado ou o id do primeiro.
   const currentValue =
     dashboards.length > 0 ? selectedDashboardId || dashboards[0].dashboardSettings.id : undefined
 
   return (
     <AppBar position="fixed" className="top-menu">
       <Toolbar variant="dense">
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleMenuOpen}>
+        <IconButton edge="start" color="inherit" onClick={handleMenuOpen}>
           <MenuIcon />
         </IconButton>
-        <Button color="inherit">Autenticar</Button>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem onClick={handleMenuClose}>Configuração 1</MenuItem>
           <MenuItem onClick={handleMenuClose}>Configuração 2</MenuItem>
           <MenuItem onClick={handleMenuClose}>Configuração 3</MenuItem>
         </Menu>
+        <Button
+          color="inherit"
+          sx={{ marginLeft: '20px', marginRight: '20px' }}
+          onClick={onOpenAuth}
+        >
+          Autenticar
+        </Button>
         <Tabs
           value={currentValue}
           onChange={handleDashboardChange}
@@ -68,7 +66,7 @@ const TopMenu: React.FC<TopMenuProps> = ({ onSelectDashboard, selectedDashboardI
             />
           ))}
         </Tabs>
-        <IconButton onClick={handleAddDashboard} color="inherit" sx={{ marginLeft: '8px' }}>
+        <IconButton onClick={onAddDashboard} color="inherit" sx={{ marginLeft: '8px' }}>
           <AddIcon />
         </IconButton>
       </Toolbar>

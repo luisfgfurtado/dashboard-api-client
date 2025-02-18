@@ -8,14 +8,18 @@ const customElectronAPI = {
   },
   onMessage: (channel: string, callback: (event: any, ...args: any[]) => void): void => {
     ipcRenderer.on(channel, callback)
+  },
+  saveGlobalStore: (state: any): void => {
+    ipcRenderer.send('save-global-store', state)
+  },
+  loadGlobalStore: (): Promise<any> => {
+    return ipcRenderer.invoke('load-global-store')
   }
 }
 
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', customElectronAPI)
-    // Exponha também outras APIs, se necessário
-    contextBridge.exposeInMainWorld('api', {})
   } catch (error) {
     console.error(error)
   }

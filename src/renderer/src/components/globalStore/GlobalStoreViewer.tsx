@@ -1,8 +1,9 @@
+// src/renderer/src/components/globalStore/GlobalStoreViewer.tsx
 import React from 'react'
-import { useGlobalStore } from './GlobalStoreProvider'
+import { useGlobalStore } from './'
 
 const GlobalStoreViewer: React.FC = () => {
-  const { globalStore } = useGlobalStore()
+  const { state } = useGlobalStore()
 
   const panelStyle: React.CSSProperties = {
     position: 'fixed',
@@ -25,20 +26,12 @@ const GlobalStoreViewer: React.FC = () => {
   return (
     <aside style={panelStyle}>
       <h2>Global Store</h2>
-      {globalStore ? (
-        <div>
-          <section style={sectionStyle}>
-            <h3>App Config</h3>
-            <pre>{JSON.stringify(globalStore.appConfig, null, 2)}</pre>
-          </section>
-          <section style={sectionStyle}>
-            <h3>Project Config</h3>
-            <pre>{JSON.stringify(globalStore.projectConfig, null, 2)}</pre>
-          </section>
-        </div>
-      ) : (
-        <p>Carregando dados...</p>
-      )}
+      <section style={sectionStyle}>
+        <h3>Auth</h3>
+        <pre>{JSON.stringify(state.authSettings, null, 2)}</pre>
+        <h3>Dashboards</h3>
+        <pre>{JSON.stringify(state.dashboards, null, 2)}</pre>
+      </section>
     </aside>
   )
 }

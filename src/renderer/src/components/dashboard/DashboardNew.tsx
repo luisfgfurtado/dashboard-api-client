@@ -1,20 +1,16 @@
 import { Button } from '@mui/material'
 import React from 'react'
 
-const DashboardNew: React.FC = () => {
-  // A função para adicionar um dashboard deve ser chamada a partir de um botão.
-  const handleAddDashboard = (): void => {
-    // Importamos a instância única diretamente
-    import('../dashboard/DashboardManager').then(({ default: DashboardManager }) => {
-      DashboardManager.newDashboard()
-    })
-  }
+interface DashboardNewProps {
+  onAddDashboard: () => void
+}
 
+const DashboardNew: React.FC<DashboardNewProps> = ({ onAddDashboard }) => {
   return (
     <div className="dashboard-new">
       <h2>Nenhum Dashboard encontrado</h2>
       <p>Por favor, clique no botão abaixo para adicionar um dashboard.</p>
-      <Button onClick={handleAddDashboard} variant="outlined">
+      <Button onClick={onAddDashboard} variant="outlined">
         Adicionar Dashboard
       </Button>
     </div>

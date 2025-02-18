@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useGlobalStore } from '../globalStore/GlobalStoreProvider'
+import { useGlobalStore } from '../globalStore'
 import { Button } from '@mui/material'
 
 interface AuthConfig {
@@ -13,10 +13,10 @@ const Auth: React.FC = () => {
   const { globalStore } = useGlobalStore()
   // Define um default vazio ou com valores temporários.
   const initialConfig: AuthConfig = {
-    authUrl: 'https://example.com/oauth2/authorize',
-    clientId: 'your-client-id',
+    authUrl: 'https://eu1.identity.cicd.development.abovecloud.io/connect/authorize',
+    clientId: 'AC-Frontend',
     responseType: 'token',
-    scope: 'read write'
+    scope: 'API'
   }
 
   const [config, setConfig] = useState<AuthConfig>(initialConfig)

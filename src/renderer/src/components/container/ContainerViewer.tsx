@@ -1,5 +1,5 @@
 // src/renderer/src/container/ContainerViewer.tsx
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Card,
   CardContent,
@@ -10,31 +10,19 @@ import {
   ListItem,
   ListItemText
 } from '@mui/material'
-import { ContainerData } from '../globalStore/GlobalStoreProvider'
-import { ContainerManager } from './ContainerManager'
+import { ContainerData } from '../globalStore'
 
 interface ContainerViewerProps {
   container: ContainerData
 }
 
 const ContainerViewer: React.FC<ContainerViewerProps> = ({ container }) => {
-  // Usamos um state dummy para forçar re-render quando o container for alterado.
-  const [_, setUpdate] = useState({})
-  const containerManager = new ContainerManager(container)
-
   const handleAddEndpoint = (): void => {
-    containerManager.addEndpoint()
-    setUpdate({}) // Força re-render para refletir a atualização
+    // Lógica para adicionar um endpoint ao container
   }
 
   const handleImportAPIDefinition = (): void => {
-    // Exemplo: chamamos a função com uma definição dummy.
-    const dummyApiDefinition = {
-      baseUrl: 'https://api.example.com',
-      authRequired: true
-    }
-    containerManager.importAPIDefinition(dummyApiDefinition)
-    setUpdate({})
+    // Lógica para importar a API definition para o container
   }
 
   return (
