@@ -31,10 +31,6 @@ jspm_packages/
 # Optional REPL history
 .node_repl_history
 
-# IDE specific files
-.vscode/
-.idea/
-
 # Electron specific
 electron-builder.yaml
 release/
