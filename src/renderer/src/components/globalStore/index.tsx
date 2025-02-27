@@ -15,9 +15,10 @@ export interface ContainerSettings {
 
 export interface ComponentDefinition {
   id: string
+  title?: string
   endpointUrl: string
   verb: string
-  type: 'Button' | 'List' | 'ComboSelect'
+  type: 'Text' | 'Table' | 'Button' | 'List' | 'ComboSelect'
   order: number
   pinned: boolean
   otherSettings: any
@@ -49,8 +50,9 @@ export type Action =
   | { type: 'ADD_DASHBOARD'; payload: DashboardData }
   | { type: 'UPDATE_DASHBOARD_TITLE'; payload: { dashboardId: string; title: string } }
   | { type: 'ADD_CONTAINER'; payload: { dashboardId: string; container: ContainerData } }
+  | { type: 'REMOVE_CONTAINER'; payload: { dashboardId: string; containerId: string } } // Nova ação
   | { type: 'UPDATE_AUTH_SETTINGS'; payload: Partial<AuthSettings> }
-  | { type: 'LOAD_STATE'; payload: Partial<GlobalState> } // para carregar o estado persistido
+  | { type: 'LOAD_STATE'; payload: Partial<GlobalState> }
 
 const initialState: GlobalState = {
   dashboards: [],
@@ -81,6 +83,20 @@ function reducer(state: GlobalState, action: Action): GlobalState {
         dashboards: state.dashboards.map((d) =>
           d.dashboardSettings.id === action.payload.dashboardId
             ? { ...d, containers: [...d.containers, action.payload.container] }
+            : d
+        )
+      }
+    case 'REMOVE_CONTAINER':
+      return {
+        ...state,
+        dashboards: state.dashboards.map((d) =>
+          d.dashboardSettings.id === action.payload.dashboardId
+            ? {
+                ...d,
+                containers: d.containers.filter(
+                  (container) => container.containerSettings.id !== action.payload.containerId
+                )
+              }
             : d
         )
       }

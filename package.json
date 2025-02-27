@@ -1,7 +1,8 @@
 {
   "name": "api-client-dashy",
-  "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "version": "0.1.1",
+  "description": "Dashboard API Client",
+  "license": "MIT",
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",

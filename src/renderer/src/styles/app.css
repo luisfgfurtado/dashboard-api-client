@@ -5,8 +5,7 @@
 }
 
 .dashboard-main {
-  padding: 20px;
-  margin-top: 70px; /* Espaço para o AppBar (Toolbar + Tabs) */
+  padding: 5px;
 }
 
 .empty-dashboard {
@@ -32,4 +31,19 @@
 .top-tabs {
   min-height: 40px;
   height: 40px;
+}
+
+.dashboard-title input {
+  font-size: 1.3em;
+  padding: 0;
+  margin: 0;
+}
+.dashboard-title {
+  width: 98%;
+  max-width: 98%;
+}
+
+.dashboard-title:hover {
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }

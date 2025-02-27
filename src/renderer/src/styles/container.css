@@ -1,0 +1,21 @@
+.container-title input {
+  font-size: 1.1em;
+  padding: 0;
+  margin: 0;
+}
+.container-title {
+  width: 98%;
+  max-width: 98%;
+  padding: 10px 7px;
+  margin: 0 -7px;
+}
+
+.container-title:hover {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.container-header {
+  background-color: #f3f3f3;
+
+  border-bottom: 1px solid #ccc;
+}

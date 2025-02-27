@@ -56,21 +56,28 @@ const DashboardViewer: React.FC<DashboardViewerProps> = ({
   return (
     <div className="dashboard-viewer">
       <TextField
-        label="Dashboard Title"
+        className="dashboard-title"
         value={title}
+        variant="standard"
         onChange={(e) => setTitle(e.target.value)}
         onBlur={handleTitleBlur}
-        variant="outlined"
         size="small"
+        InputProps={{
+          disableUnderline: true
+        }}
       />
       <div style={{ margin: '16px 0' }}>
-        <Button variant="contained" color="primary" onClick={handleAddContainer}>
+        <Button variant="contained" color="primary" size="small" onClick={handleAddContainer}>
           Add Container
         </Button>
       </div>
       {dashboard.containers && dashboard.containers.length > 0 ? (
         dashboard.containers.map((container) => (
-          <ContainerViewer key={container.containerSettings.id} container={container} />
+          <ContainerViewer
+            key={container.containerSettings.id}
+            container={container}
+            dashboardId={dashboard.dashboardSettings.id}
+          />
         ))
       ) : (
         <Typography variant="body1">No containers added yet.</Typography>
