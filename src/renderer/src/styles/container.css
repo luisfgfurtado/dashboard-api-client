@@ -16,6 +16,6 @@
 }
 .container-header {
   background-color: #f3f3f3;
-
+  height: 10px;
   border-bottom: 1px solid #ccc;
 }
